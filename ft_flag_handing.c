@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_flag_handing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/23 11:47:16 by widraugr          #+#    #+#             */
-/*   Updated: 2019/02/26 11:11:24 by widraugr         ###   ########.fr       */
+/*   Created: 2019/02/26 14:34:25 by widraugr          #+#    #+#             */
+/*   Updated: 2019/02/26 14:43:33 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_ls.h"
+/*
+** Печатает директорию согласно флагам.
+*/
 
-char	*ft_strdup(const char *s1)
+void	ft_flag_handing(t_flag *fl, int ac, char **av)
 {
-	int		i;
-	char	*str_cop;
 
-	i = 0;
-	while (s1[i])
-		i++;
-	if (!(str_cop = (char*)malloc(sizeof(char) * (i + 1))))
-		return (0);
-	i = 0;
-	while (s1[i])
-	{
-		str_cop[i] = s1[i];
-		i++;
-	}
-	str_cop[i] = '\0';
-	return (str_cop);
 }
