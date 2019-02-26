@@ -6,7 +6,7 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:23:47 by widraugr          #+#    #+#             */
-/*   Updated: 2019/02/26 15:34:11 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/02/26 16:39:17 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,5 @@ typedef	struct	s_flag
 void	ft_flag_handing(t_flag *fl, int ac, char **av);
 t_flag	*ft_new_list_flag(void);
 void	ft_initialization(t_flag *fl, char *str);
-/*
-void	ft_flag_l(int ac, char **av);
-void	ft_flag_r(int ac, char **av);
-void	ft_flag_bigr(int ac, char **av);
-void	ft_flag_t(int ac, char **av);
-void	ft_flag_a(int ac, char **av);
-*/
+
 #endif
