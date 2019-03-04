@@ -18,5 +18,9 @@
 
 void	ft_flag_handing(t_flag *fl, int ac, char **av)
 {
-
+	if (ac == 2)
+		ft_open_dir(".", fl);
+	else
+		while (--ac - 1 > 0)
+			ft_open_dir(*(++av + 1), fl);
 }

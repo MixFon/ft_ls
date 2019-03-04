@@ -11,27 +11,44 @@
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-#include <sys/types.h>
-#include <dirent.h>
+
+void	print_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		ft_printf("arr = '%s'\n", arr[i]);
+		i++;
+	}
+}
 
 void	ft_open_dir(char *name_dir, t_flag *fl)
 {
 	DIR				*dir;
 	struct dirent	*dirent;
+	char			*str;
+	char			**arr;
 
+	str = ft_strnew(0);
 	if (!(dir = opendir(name_dir)))
 	{
-		printf("No open %s\n", name_dir);
+		ft_printf("No open %s\n", name_dir);
 		return ;
 	}
 	while ((dirent = readdir(dir)) != NULL)
 		if (fl->flag_a == 1)
-			ft_printf("%s\n", dirent->d_name);
+			str = ft_join_name(str, dirent->d_name, name_dir);
 		else
-		{
 			if (dirent->d_name[0] != '.')
-				ft_printf("%s\n", dirent->d_name);
-		}
+				str = ft_join_name(str, dirent->d_name, name_dir);
+	//ft_printf("str = '%s'\n", str);
+	ft_printf("\n%s\n", name_dir);
+	arr = ft_strsplit(str, ' ');
+	print_arr(arr);
+	if (fl->flag_bigr)
+		ft_stat(arr, fl, ft_open_dir);
 	closedir(dir);
 }
 
@@ -61,10 +78,7 @@ void	ft_switch(t_flag *fl, int ac, char **av)
 	i = 0;
 	if (!fl->flags)
 		while (++i < ac)
-		{
-			ft_printf("%s:\n", av[i]);
 			ft_open_dir(av[i], fl);
-		}
 	else
 		ft_flag_handing(fl, ac, av);
 }	
