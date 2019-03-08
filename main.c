@@ -12,16 +12,19 @@
 
 #include "ft_ls.h"
 
-void	print_arr(char **arr)
+void	ft_print_arr(char **arr, t_flag *fl)
 {
 	int	i;
 
 	i = 0;
-	while (arr[i] != NULL)
-	{
-		ft_printf("arr = '%s'\n", arr[i]);
-		i++;
-	}
+	if (!fl->flag_l)
+		while (arr[i] != NULL)
+		{
+			ft_printf("%s\n", ft_last_ndir(arr[i]));
+			i++;
+		}
+	else
+		ft_flag_l(arr, fl);
 }
 
 void	ft_open_dir(char *name_dir, t_flag *fl)
@@ -43,12 +46,14 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 		else
 			if (dirent->d_name[0] != '.')
 				str = ft_join_name(str, dirent->d_name, name_dir);
-	//ft_printf("str = '%s'\n", str);
-	ft_printf("\n%s\n", name_dir);
+	ft_printf("\n%s:\n", name_dir);
 	arr = ft_strsplit(str, ' ');
-	print_arr(arr);
+	free(str);
+	ft_sort_arr(&arr, fl);
+	ft_print_arr(arr, fl);
 	if (fl->flag_bigr)
 		ft_stat(arr, fl, ft_open_dir);
+	ft_del_arr(arr);
 	closedir(dir);
 }
 

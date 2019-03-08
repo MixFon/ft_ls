@@ -17,6 +17,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <pwd.h>
 
 typedef	struct	s_flag
 {
@@ -35,5 +36,9 @@ void	ft_initialization(t_flag *fl, char *str);
 void	ft_open_dir(char *, t_flag *);
 char	*ft_join_name(char *str, char *name, char *name_dir);
 void	ft_stat(char **arr, t_flag *fl, void (*fcn)(char *, t_flag *));
+void	ft_del_arr(char **arr);
+void	*ft_last_ndir(char *dir);
+void	ft_sort_arr(char ***arr, t_flag *fl);
+void	ft_flag_l(char **arr, t_flag *fl);
 
 #endif

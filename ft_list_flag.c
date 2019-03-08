@@ -42,6 +42,20 @@ char	*ft_join_name(char *str, char *name, char *name_dir)
 }
 
 /*
+** Удаляет массив имен.
+*/
+
+void	ft_del_arr(char **arr)
+{
+	while (*arr != NULL)
+	{
+		free(*arr);
+		*arr = NULL;
+		arr++;
+	}
+}
+
+/*
 ** Инициализирует структуру стандартными занчениями.
 */
 
