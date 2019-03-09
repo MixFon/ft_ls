@@ -39,7 +39,6 @@ static size_t	ft_strclen(char *s, char c)
 		i++;
 	return (i);
 }
-
 static	char	**ft_strfree(char **arr, int i)
 {
 	while (i >= 0)

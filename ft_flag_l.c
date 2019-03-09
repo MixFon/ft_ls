@@ -18,6 +18,11 @@ void	ft_pitnt_stat(char *name, struct stat *st_buf)
 	ft_printf("st_mtime\t %d\n", st_buf->st_mtime);
 	ft_printf("st_ctime\t %d\n", st_buf->st_ctime);
 	ft_printf("S_IFDIR\t\t %d\n", S_IFDIR);
+	ft_printf("S_IRWXU\t\t %d\n", S_IRWXU);
+	ft_printf("Mask \t\t %d\n", (st_buf->st_mode & S_IXUSR));
+	ft_printf("S_IRUSR\t\t %d\n", S_IRUSR);
+	ft_printf("S_IWUSR\t\t %d\n", S_IWUSR);
+	ft_printf("S_IXUSR\t\t %d\n", S_IXUSR);
 
 }
 
@@ -32,42 +37,135 @@ void	ft_print_passwd(struct passwd *pas_buf)
 	ft_printf("pw_shell\t %s\n", pas_buf->pw_shell);
 }
 
-char	*ft_access_rights(char *rights, struct stat *st_buf)
+void	ft_print_total(char **arr)
 {
-	if (S_ISDIR(st_buf->st_mode))
-		*rights = 'd';
-	else	if (S_ISLNK(st_buf->st_mode))
-		*rights = 'l';
-	else	if (S_ISREG(st_buf->st_mode))
-		*rights = '-';
-	else	if (S_ISBLK(st_buf->st_mode))
-		*rights = 'b';
-	else	if (S_ISCHR(st_buf->st_mode))
-		*rights = 'c';
-	return (rights);
+	struct stat		*st_buf;
+	size_t			total;
+
+	total = 0;
+	while (*arr)
+	{
+		st_buf = (struct stat *)malloc(sizeof(struct stat));
+		stat(*arr, st_buf);
+		//Поправить символьную ссылку!
+		if ((st_buf->st_mode & S_IFMT) != S_IFLNK)
+			total += st_buf->st_blocks;
+		free(st_buf);
+		arr++;
+	}
+	ft_printf("total %d\n", total);
 }
 
-void	ft_stat_line(struct stat *st_buf)
+char	*ft_infill_dt_time(char *time)
 {
-	char *rights;
+	char *str_time;
 
-	rights = ft_strnew(10);
-	ft_access_rights(rights, st_buf);
-	ft_printf("rights '%s'\n", rights);
+	str_time = ft_strnew(5);
+	ft_strncpy(str_time, time, 5);
+	return (str_time);
+}
+
+t_filds	*ft_stat_line(struct stat *st_buf, char *name,
+		struct passwd *pas_buf, t_filds *first_fild)
+{
+	struct group	*gr_buf;
+	struct tm		*tm_buf;
+	char			**date;
+	t_filds			*fild;
+	t_filds			*first;
+
+	first = first_fild;
+	fild = ft_create_fild();
+	gr_buf = getgrgid(st_buf->st_gid);
+	ft_create_rights(fild, st_buf);
+	fild->links = st_buf->st_nlink;
+	fild->users = ft_strdup(pas_buf->pw_name);
+	fild->grups = ft_strdup(gr_buf->gr_name);
+	fild->size = st_buf->st_size;
+	tm_buf = gmtime(&st_buf->st_ctime);
+	//ft_printf("char time %s", ctime(&st_buf->st_ctime));
+	//ft_printf("asctime  %d\n",asctime(tm_buf));
+	//ft_printf("hour %d min %d\n", tm_buf->tm_hour, tm_buf->tm_min);
+	date = ft_strsplit(ctime(&st_buf->st_ctime), ' '); 
+	fild->mon = ft_strdup(date[1]);
+	fild->day = ft_strdup(date[2]);
+	fild->time = ft_strdup(ft_infill_dt_time(date[3]));
+	fild->name = ft_strdup(name);
+	//fild->i++;
+	//ft_printf("filds %d\n", ft_num(3994));
+	//ft_printf("rights '%s'\n", rights);
+//	ft_printf("%s %2d %s %s %5d %s %s %s %s\n",
+//			fild->rights, fild->links, fild->users,
+//			fild->grups, fild->size, fild->mon, fild->day, fild->time, fild->name);
+	if (first_fild == NULL)
+		first = fild;
+	else
+	{
+		while (first_fild->next != NULL)
+			first_fild = first_fild->next;
+		first_fild->next = fild;
+	}
+	ft_del_arr(date);
+	return (first);
 }
 
 void	ft_flag_l(char **arr, t_flag *fl)
 {
 	struct passwd	*pas_buf;
 	struct stat		*st_buf;
+	t_filds			*filds;
 
 //	ft_printf("Here is flag l'%s'\n", *arr);
-	arr++;
-	st_buf = (struct stat *)malloc(sizeof(struct stat));
-	stat(*arr, st_buf);
-	ft_stat_line(st_buf);
-	ft_pitnt_stat(*arr, st_buf);
-	free(st_buf);
-	pas_buf = getpwuid(st_buf->st_uid);
-	ft_print_passwd(pas_buf);
+//	arr++;
+	filds = NULL;
+	ft_print_total(arr);
+	while (*arr)
+	{
+		st_buf = (struct stat *)malloc(sizeof(struct stat));
+		stat(*arr, st_buf);
+		//ft_pitnt_stat(*arr, st_buf);
+		pas_buf = getpwuid(st_buf->st_uid);
+		filds = ft_stat_line(st_buf, ft_last_ndir(*arr), pas_buf, filds);
+		//ft_print_passwd(pas_buf);
+		free(st_buf);
+		arr++;
+	}
+	ft_print_filds(filds);
+	ft_del_filsa(filds);
 }
+/*
+void	ft_stat_line(struct stat *st_buf, char *name,
+		struct passwd *pas_buf, t_filds *fild)
+{
+	char			*rights;
+	struct group	*gr_buf;
+	struct tm		*tm_buf;
+	char			**date;
+	char			*dt_time;
+
+	if (fild == NULL)
+		fild = ft_create_fild();
+	while (fild->next != NULL)
+		fild = fild->next;
+	gr_buf = getgrgid(st_buf->st_gid);
+	rights = ft_strnew(10);
+	tm_buf = gmtime(&st_buf->st_ctime);
+	//ft_printf("char time %s", ctime(&st_buf->st_ctime));
+	//ft_printf("asctime  %d\n",asctime(tm_buf));
+	//ft_printf("hour %d min %d\n", tm_buf->tm_hour, tm_buf->tm_min);
+	date = ft_strsplit(ctime(&st_buf->st_ctime), ' '); 
+	dt_time = ft_infill_dt_time(date[3]);
+	//ft_printf("filds %d\n", ft_num(3994));
+	ft_type_files(rights, st_buf);
+	ft_access_rights_user(rights, st_buf);
+	ft_access_rights_grup(rights, st_buf);
+	ft_access_rights_all(rights, st_buf);
+	//ft_printf("rights '%s'\n", rights);
+	ft_printf("%s %2d %s %s %5d %s %s %s %s\n",
+			rights, st_buf->st_nlink, pas_buf->pw_name,
+			gr_buf->gr_name, st_buf->st_size, date[1], date[2], dt_time, name);
+	ft_del_arr(date);
+	free(dt_time);
+	free(rights);
+}
+*/
