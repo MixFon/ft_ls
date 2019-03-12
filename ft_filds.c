@@ -79,7 +79,7 @@ void	ft_print_filds(t_filds *fild)
 	ft_paragraph(fild , &ln, &us, &gr, &sz);
 	while (fild != NULL)
 	{
-		printf("%s  %*d %-*s %-*s %*zd %s %2s %s %s\n",
+		ft_printf("%s  %*d %-*s %-*s %*zd %s %2s %s %s\n",
 		fild->rights, ln, fild->links, us, fild->users,
 		 gr, fild->grups, sz, fild->size, fild->mon, fild->day,
 		fild->time, fild->name);
@@ -92,7 +92,7 @@ void	ft_print_filds(t_filds *fild)
 ** Функиция заполняющая строку времени в выводе даты.
 */
 
-void	ft_del_filsa(t_filds *fild)
+void	ft_del_filds(t_filds *fild)
 {
 	t_filds	*prev;
 

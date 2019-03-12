@@ -18,15 +18,20 @@
 
 void	ft_flag_handing(t_flag *fl, int ac, char **av)
 {
+	int bl;
+
+	bl = 0;
 	if (ac == 2)
 		ft_open_dir(".", fl);
 	else
-		while (--ac - 1 > 0)
-			ft_open_dir(*(++av + 1), fl);
+	{
+		bl = ft_flag_handing_reg(fl, ac, av);
+		ft_flag_handing_dir(fl, ac, av, bl);
+	}
 }
 
 /*
-** Меняет указатели местами.
+** Считате количество слов.
 */
 
 size_t	ft_count_str(char **arr)

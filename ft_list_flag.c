@@ -56,6 +56,21 @@ void	ft_del_arr(char **arr)
 }
 
 /*
+** Функция печатает содержимое флага.
+** Удалить эту функцию!!!!.
+*/
+
+void	ft_print_flag(t_flag *fl)
+{
+	ft_printf("Flag l = %d\n", fl->flag_l);
+	ft_printf("Flag r = %d\n", fl->flag_r);
+	ft_printf("Flag R = %d\n", fl->flag_bigr);
+	ft_printf("Flag a = %d\n", fl->flag_a);
+	ft_printf("Flag t = %d\n", fl->flag_t);
+	ft_printf("Flags = %d\n", fl->flags);
+}
+
+/*
 ** Инициализирует структуру стандартными занчениями.
 */
 
@@ -63,19 +78,14 @@ void	ft_initialization(t_flag *fl, char *str)
 {
 	if(ft_strchr(str, 'l'))
 		fl->flag_l = 1;
-	ft_printf("Flag l = %d\n", fl->flag_l);
 	if(ft_strchr(str, 'r'))
 		fl->flag_r = 1;
-	ft_printf("Flag r = %d\n", fl->flag_r);
 	if(ft_strchr(str, 'R'))
 		fl->flag_bigr = 1;
-	ft_printf("Flag R = %d\n", fl->flag_bigr);
 	if(ft_strchr(str, 'a'))
 		fl->flag_a = 1;
-	ft_printf("Flag a = %d\n", fl->flag_a);
 	if(ft_strchr(str, 't'))
 		fl->flag_t = 1;
-	ft_printf("Flag t = %d\n", fl->flag_t);
 	fl->flags = 1;
-	ft_printf("Flags = %d\n", fl->flags);
+	//ft_print_flag(fl);
 }

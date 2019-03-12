@@ -1,4 +1,5 @@
 
+
 #include "ft_ls.h"
 
 void	ft_pitnt_stat(char *name, struct stat *st_buf)
@@ -23,7 +24,6 @@ void	ft_pitnt_stat(char *name, struct stat *st_buf)
 	ft_printf("S_IRUSR\t\t %d\n", S_IRUSR);
 	ft_printf("S_IWUSR\t\t %d\n", S_IWUSR);
 	ft_printf("S_IXUSR\t\t %d\n", S_IXUSR);
-
 }
 
 void	ft_print_passwd(struct passwd *pas_buf)
@@ -37,6 +37,10 @@ void	ft_print_passwd(struct passwd *pas_buf)
 	ft_printf("pw_shell\t %s\n", pas_buf->pw_shell);
 }
 
+/*
+** Печатает стрку total.
+*/
+
 void	ft_print_total(char **arr)
 {
 	struct stat		*st_buf;
@@ -46,8 +50,12 @@ void	ft_print_total(char **arr)
 	while (*arr)
 	{
 		st_buf = (struct stat *)malloc(sizeof(struct stat));
-		stat(*arr, st_buf);
-		//Поправить символьную ссылку!
+		if (lstat(*arr, st_buf) < 0)
+		{
+			//ft_printf("Error lstat");
+			arr++;
+			continue ;
+		}
 		if ((st_buf->st_mode & S_IFMT) != S_IFLNK)
 			total += st_buf->st_blocks;
 		free(st_buf);
@@ -55,6 +63,10 @@ void	ft_print_total(char **arr)
 	}
 	ft_printf("total %d\n", total);
 }
+
+/*
+** Создает строку содержащую время.
+*/
 
 char	*ft_infill_dt_time(char *time)
 {
@@ -64,6 +76,9 @@ char	*ft_infill_dt_time(char *time)
 	ft_strncpy(str_time, time, 5);
 	return (str_time);
 }
+/*
+** Создает новый элемент списка filds и добавляет уго в конец.
+*/
 
 t_filds	*ft_stat_line(struct stat *st_buf, char *name,
 		struct passwd *pas_buf, t_filds *first_fild)
@@ -109,29 +124,32 @@ t_filds	*ft_stat_line(struct stat *st_buf, char *name,
 	return (first);
 }
 
+/*
+** При поднятом флаге l создает список из файлов
+*/
+
 void	ft_flag_l(char **arr, t_flag *fl)
 {
 	struct passwd	*pas_buf;
 	struct stat		*st_buf;
 	t_filds			*filds;
 
-//	ft_printf("Here is flag l'%s'\n", *arr);
-//	arr++;
 	filds = NULL;
-	ft_print_total(arr);
-	while (*arr)
+	while (*arr != NULL)
 	{
 		st_buf = (struct stat *)malloc(sizeof(struct stat));
-		stat(*arr, st_buf);
-		//ft_pitnt_stat(*arr, st_buf);
+		if (lstat(*arr, st_buf) < 0)
+		{
+			arr++;
+			continue ;
+		}
 		pas_buf = getpwuid(st_buf->st_uid);
 		filds = ft_stat_line(st_buf, ft_last_ndir(*arr), pas_buf, filds);
-		//ft_print_passwd(pas_buf);
 		free(st_buf);
 		arr++;
 	}
 	ft_print_filds(filds);
-	ft_del_filsa(filds);
+	ft_del_filds(filds);
 }
 /*
 void	ft_stat_line(struct stat *st_buf, char *name,

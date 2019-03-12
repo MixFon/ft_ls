@@ -62,6 +62,10 @@ void	ft_access_rights_all(char *rights, struct stat *st_buf);
 t_filds	*ft_create_fild(void);
 void	ft_create_rights(t_filds *fild, struct stat *st_buf);
 void	ft_print_filds(t_filds *fild);
-void	ft_del_filsa(t_filds *fild);
+void	ft_del_filds(t_filds *fild);
+void	ft_print_total(char **arr);
+void	ft_print_arr(char **arr, t_flag *fl, char *name_dir);
+int		ft_flag_handing_reg(t_flag *fl, int ac, char **av);
+void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl);
 
 #endif

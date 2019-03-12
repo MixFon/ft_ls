@@ -12,11 +12,15 @@
 
 #include "ft_ls.h"
 
-void	ft_print_arr(char **arr, t_flag *fl)
+void	ft_print_arr(char **arr, t_flag *fl, char *name_dir)
 {
-	int	i;
+	int			i;
+	static int	bl = 0;
 
 	i = 0;
+	if (bl)
+		ft_printf("\n%s:\n", name_dir);
+	bl = 1;
 	if (!fl->flag_l)
 		while (arr[i] != NULL)
 		{
@@ -24,7 +28,11 @@ void	ft_print_arr(char **arr, t_flag *fl)
 			i++;
 		}
 	else
+	{
+		ft_print_total(arr);
 		ft_flag_l(arr, fl);
+	}
+
 }
 
 void	ft_open_dir(char *name_dir, t_flag *fl)
@@ -37,7 +45,7 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 	str = ft_strnew(0);
 	if (!(dir = opendir(name_dir)))
 	{
-		ft_printf("No open %s\n", name_dir);
+		ft_printf("ft_ls: %s: No such file or directory\n", name_dir);
 		return ;
 	}
 	while ((dirent = readdir(dir)) != NULL)
@@ -46,11 +54,11 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 		else
 			if (dirent->d_name[0] != '.')
 				str = ft_join_name(str, dirent->d_name, name_dir);
-	ft_printf("\n%s:\n", name_dir);
+//	ft_printf("\n%s:\n", name_dir);
 	arr = ft_strsplit(str, ' ');
 	free(str);
 	ft_sort_arr(&arr, fl);
-	ft_print_arr(arr, fl);
+	ft_print_arr(arr, fl, name_dir);
 	if (fl->flag_bigr)
 		ft_stat(arr, fl, ft_open_dir);
 	ft_del_arr(arr);
@@ -82,8 +90,9 @@ void	ft_switch(t_flag *fl, int ac, char **av)
 	
 	i = 0;
 	if (!fl->flags)
-		while (++i < ac)
-			ft_open_dir(av[i], fl);
+		ft_flag_handing(fl, ac + 1, av - 1);
+		//while (++i < ac)
+		//	ft_open_dir(av[i], fl);
 	else
 		ft_flag_handing(fl, ac, av);
 }	
