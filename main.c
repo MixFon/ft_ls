@@ -55,7 +55,7 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 			if (dirent->d_name[0] != '.')
 				str = ft_join_name(str, dirent->d_name, name_dir);
 //	ft_printf("\n%s:\n", name_dir);
-	arr = ft_strsplit(str, ' ');
+	arr = ft_strsplit(str, '|');
 	free(str);
 	ft_sort_arr(&arr, fl);
 	ft_print_arr(arr, fl, name_dir);
@@ -86,18 +86,17 @@ t_flag	*ft_readflag(int ac, char **av)
 
 void	ft_switch(t_flag *fl, int ac, char **av)
 {
-	short int	i;
+	int	i;
 	
 	i = 0;
 	if (!fl->flags)
 		ft_flag_handing(fl, ac + 1, av - 1);
-		//while (++i < ac)
-		//	ft_open_dir(av[i], fl);
 	else
 		ft_flag_handing(fl, ac, av);
-}	
+}
 
-int main (int ac, char **av)
+
+int		main (int ac, char **av)
 {
 	t_flag		*fl;
 

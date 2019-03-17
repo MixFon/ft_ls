@@ -37,7 +37,7 @@ char	*ft_join_name(char *str, char *name, char *name_dir)
 	str = ft_strnjoinfree(str, name_dir);
 	str = ft_strnjoinfree(str, "/");
 	str = ft_strnjoinfree(str, name);
-	str = ft_strnjoinfree(str, " ");
+	str = ft_strnjoinfree(str, "|");
 	return (str);
 }
 

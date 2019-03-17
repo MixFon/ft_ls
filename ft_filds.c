@@ -17,6 +17,8 @@ t_filds	*ft_create_fild(void)
 	new->time = NULL;
 	new->name = NULL;
 	new->next = NULL;
+	new->major = 0;
+	new->minor = 0;
 	return (new);
 }
 
@@ -41,7 +43,7 @@ size_t	ft_num(int arg)
 ** Функиция заполняет отступы для выравнивания.
 */
 
-void	ft_paragraph(t_filds *fild, int *ln, int *us, int *gr, int *sz)
+void	ft_paragraph(t_filds *fild, int *ln, int *us, int *gr, int *sz, int *sma, int *smi)
 {
 	int	temp;
 
@@ -56,10 +58,16 @@ void	ft_paragraph(t_filds *fild, int *ln, int *us, int *gr, int *sz)
 			*us = temp + 1;
 		temp = ft_strlen(fild->grups);
 		if (temp > *gr)
-			*gr = temp + 1;
+			*gr = temp + 2;
 		temp = ft_num(fild->size);
 		if (temp > *sz)
 			*sz = temp;
+		temp = ft_num(fild->major);
+		if (temp > *sma)
+			*sma = temp;
+		temp = ft_num(fild->minor);
+		if (temp > *smi)
+			*smi = temp;
 		fild = fild->next;
 	}
 	//ft_printf("%d %d %d %*d", *ln, *us, *gr, *sz);
@@ -71,21 +79,31 @@ void	ft_print_filds(t_filds *fild)
 	int	us;
 	int	gr;
 	int	sz;
+	int	sma;
+	int	smi;
 
 	ln = 0;
 	us = 0;
 	gr = 0;
 	sz = 0;
-	ft_paragraph(fild , &ln, &us, &gr, &sz);
+	sma = 0;
+	smi = 0;
+	ft_paragraph(fild , &ln, &us, &gr, &sz, &sma, &smi);
 	while (fild != NULL)
 	{
-		ft_printf("%s  %*d %-*s %-*s %*zd %s %2s %s %s\n",
+		if (fild->major == 0 && fild->major == 0)
+			ft_printf("%-11s %*d %-*s %-*s %*zd %s %2s %5s %s\n",
 		fild->rights, ln, fild->links, us, fild->users,
-		 gr, fild->grups, sz, fild->size, fild->mon, fild->day,
+		gr, fild->grups, sz + sma + smi + 2, fild->size,  fild->mon, fild->day,
+		fild->time, fild->name);
+		else
+			ft_printf("%-11s %*d %-*s %-*s %*d, %*d %s %2s %5s %s\n",
+		fild->rights, ln, fild->links, us, fild->users,
+		gr, fild->grups, sma, fild->major, smi, fild->minor, 
+		fild->mon, fild->day,
 		fild->time, fild->name);
 		fild = fild->next;
 	}
-
 }
 
 /*

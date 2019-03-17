@@ -34,6 +34,11 @@ void	ft_access_rights_user(char *rights, struct stat *st_buf)
 		*(rights + 3) = 'x';
 	else
 		*(rights + 3) = '-';
+	if (((st_buf->st_mode & S_ISUID) == S_ISUID) && 
+			((st_buf->st_mode & S_IXUSR) == S_IXUSR))
+		*(rights + 3) = 's';
+	else	if ((st_buf->st_mode & S_ISUID) == S_ISUID)
+		*(rights + 3) = 'S';
 }
 
 void	ft_access_rights_grup(char *rights, struct stat *st_buf)
@@ -50,6 +55,11 @@ void	ft_access_rights_grup(char *rights, struct stat *st_buf)
 		*(rights + 6) = 'x';
 	else
 		*(rights + 6) = '-';
+	if ((st_buf->st_mode & S_ISGID) == S_ISGID &&
+			((st_buf->st_mode & S_IXGRP) == S_IXGRP))
+		*(rights + 6) = 's';
+	else	if ((st_buf->st_mode & S_ISGID) == S_ISGID)
+		*(rights + 6) = 'S';
 }
 
 void	ft_access_rights_all(char *rights, struct stat *st_buf)
@@ -66,14 +76,20 @@ void	ft_access_rights_all(char *rights, struct stat *st_buf)
 		*(rights + 9) = 'x';
 	else
 		*(rights + 9) = '-';
+	if ((st_buf->st_mode & S_ISVTX) == S_ISVTX &&
+			((st_buf->st_mode & S_IXOTH) == S_IXOTH))
+		*(rights + 9) = 't';
+	else	if ((st_buf->st_mode & S_ISVTX) == S_ISVTX)
+		*(rights + 9) = 'T';
 
 }
 
-void	ft_create_rights(t_filds *fild, struct stat *st_buf)
+void	ft_create_rights(t_filds *fild, struct stat *st_buf, char *path)
 {
-	fild->rights = ft_strnew(10);
+	fild->rights = ft_strnew(11);
 	ft_type_files(fild->rights, st_buf);
 	ft_access_rights_user(fild->rights, st_buf);
 	ft_access_rights_grup(fild->rights, st_buf);
 	ft_access_rights_all(fild->rights, st_buf);
+	ft_acl(fild->rights, path);
 }

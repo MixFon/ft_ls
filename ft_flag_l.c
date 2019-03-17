@@ -24,6 +24,8 @@ void	ft_pitnt_stat(char *name, struct stat *st_buf)
 	ft_printf("S_IRUSR\t\t %d\n", S_IRUSR);
 	ft_printf("S_IWUSR\t\t %d\n", S_IWUSR);
 	ft_printf("S_IXUSR\t\t %d\n", S_IXUSR);
+	ft_printf("S_ISVTX\t\t %d\n", S_ISVTX);
+
 }
 
 void	ft_print_passwd(struct passwd *pas_buf)
@@ -73,45 +75,61 @@ char	*ft_infill_dt_time(char *time)
 	char *str_time;
 
 	str_time = ft_strnew(5);
-	ft_strncpy(str_time, time, 5);
+	if (ft_strcl(time, '\n') == 4)
+		ft_strncpy(str_time, time, 4);
+	else
+		ft_strncpy(str_time, time, 5);
 	return (str_time);
 }
+
+/*
+** Обрабатывает дату.
+*/
+
+void	ft_work_date(t_filds *fild, struct stat *st_buf)
+{
+	struct tm		*tm_buf;
+	char			**date;
+	long long int	real_sec;
+
+	fild->major = major(st_buf->st_rdev);
+	fild->minor = minor(st_buf->st_rdev);
+	//ft_printf("major %d ", major(st_buf->st_rdev));
+	//ft_printf("minor %d\n", minor(st_buf->st_rdev));
+	date = ft_strsplit(ctime(&st_buf->st_mtime), ' '); 
+	real_sec = time(NULL);
+	fild->mon = ft_strdup(date[1]);
+	fild->day = ft_strdup(date[2]);
+	if ((real_sec - st_buf->st_mtime) > 15638400)
+		fild->time = ft_infill_dt_time(date[4]);
+	else
+		fild->time = ft_infill_dt_time(date[3]);
+	ft_del_arr(date);
+}
+
+
 /*
 ** Создает новый элемент списка filds и добавляет уго в конец.
 */
 
-t_filds	*ft_stat_line(struct stat *st_buf, char *name,
+t_filds	*ft_stat_line(struct stat *st_buf, char *path,
 		struct passwd *pas_buf, t_filds *first_fild)
 {
 	struct group	*gr_buf;
-	struct tm		*tm_buf;
-	char			**date;
 	t_filds			*fild;
 	t_filds			*first;
 
 	first = first_fild;
 	fild = ft_create_fild();
 	gr_buf = getgrgid(st_buf->st_gid);
-	ft_create_rights(fild, st_buf);
+	ft_create_rights(fild, st_buf, path);
 	fild->links = st_buf->st_nlink;
 	fild->users = ft_strdup(pas_buf->pw_name);
 	fild->grups = ft_strdup(gr_buf->gr_name);
 	fild->size = st_buf->st_size;
-	tm_buf = gmtime(&st_buf->st_ctime);
-	//ft_printf("char time %s", ctime(&st_buf->st_ctime));
-	//ft_printf("asctime  %d\n",asctime(tm_buf));
-	//ft_printf("hour %d min %d\n", tm_buf->tm_hour, tm_buf->tm_min);
-	date = ft_strsplit(ctime(&st_buf->st_ctime), ' '); 
-	fild->mon = ft_strdup(date[1]);
-	fild->day = ft_strdup(date[2]);
-	fild->time = ft_strdup(ft_infill_dt_time(date[3]));
-	fild->name = ft_strdup(name);
-	//fild->i++;
-	//ft_printf("filds %d\n", ft_num(3994));
-	//ft_printf("rights '%s'\n", rights);
-//	ft_printf("%s %2d %s %s %5d %s %s %s %s\n",
-//			fild->rights, fild->links, fild->users,
-//			fild->grups, fild->size, fild->mon, fild->day, fild->time, fild->name);
+	ft_work_date(fild, st_buf);
+	ft_link_name(st_buf, path);
+	fild->name = ft_link_name(st_buf, path);
 	if (first_fild == NULL)
 		first = fild;
 	else
@@ -120,7 +138,6 @@ t_filds	*ft_stat_line(struct stat *st_buf, char *name,
 			first_fild = first_fild->next;
 		first_fild->next = fild;
 	}
-	ft_del_arr(date);
 	return (first);
 }
 
@@ -144,7 +161,7 @@ void	ft_flag_l(char **arr, t_flag *fl)
 			continue ;
 		}
 		pas_buf = getpwuid(st_buf->st_uid);
-		filds = ft_stat_line(st_buf, ft_last_ndir(*arr), pas_buf, filds);
+		filds = ft_stat_line(st_buf, *arr, pas_buf, filds);
 		free(st_buf);
 		arr++;
 	}

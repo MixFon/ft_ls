@@ -20,6 +20,10 @@
 #include <dirent.h>
 #include <pwd.h>
 #include <grp.h>
+#include <sys/types.h>
+#include <sys/xattr.h>
+#include <sys/acl.h>
+#include <unistd.h>
 
 typedef	struct		s_flag
 {
@@ -42,6 +46,8 @@ typedef struct		s_filds
 	char			*day;
 	char			*time;
 	char			*name;
+	int				major;
+	int				minor;
 	struct s_filds	*next;
 }					t_filds;
 
@@ -60,12 +66,14 @@ void	ft_access_rights_user(char *rights, struct stat *st_buf);
 void	ft_access_rights_grup(char *rights, struct stat *st_buf);
 void	ft_access_rights_all(char *rights, struct stat *st_buf);
 t_filds	*ft_create_fild(void);
-void	ft_create_rights(t_filds *fild, struct stat *st_buf);
+void	ft_create_rights(t_filds *fild, struct stat *st_buf, char *path);
 void	ft_print_filds(t_filds *fild);
 void	ft_del_filds(t_filds *fild);
 void	ft_print_total(char **arr);
 void	ft_print_arr(char **arr, t_flag *fl, char *name_dir);
 int		ft_flag_handing_reg(t_flag *fl, int ac, char **av);
 void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl);
+void	ft_acl(char *rights, char *path);
+char	*ft_link_name(struct stat *st_buf, char *path);
 
 #endif

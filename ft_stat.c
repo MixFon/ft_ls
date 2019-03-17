@@ -75,7 +75,7 @@ int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 	i = 1;
 	while (--ac - 1 > 0)
 	{
-		if (stat(*(++av + 1), &st_buf) == -1)
+		if (lstat(*(++av + 1), &st_buf) == -1)
 		{
 			ft_printf("ft_ls: %s: No such file or directory\n", *(av + 1));
 			continue ;
@@ -83,7 +83,7 @@ int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 		if (S_ISREG(st_buf.st_mode))
 		{
 			str_n = ft_strnjoinfree(str_n, *(av + 1));
-			str_n = ft_strnjoinfree(str_n, " ");
+			str_n = ft_strnjoinfree(str_n, "|");
 		}
 	}
 	if (*str_n == '\0')		
@@ -91,7 +91,7 @@ int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 		free(str_n);
 		return (0);
 	}
-	arr_n = ft_strsplit(str_n, ' ');
+	arr_n = ft_strsplit(str_n, '|');
 	ft_sort_arr(&arr_n, fl);
 	if (fl->flag_l)
 		ft_flag_l(arr_n, fl);
@@ -127,7 +127,7 @@ void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl)
 		if (S_ISDIR(st_buf.st_mode))
 		{
 			str_d = ft_strnjoinfree(str_d, *(av + 1));
-			str_d = ft_strnjoinfree(str_d, " ");
+			str_d = ft_strnjoinfree(str_d, "|");
 		}
 	}
 	if (*str_d == '\0')		
@@ -135,7 +135,7 @@ void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl)
 		free(str_d);
 		return ;
 	}
-	arr_d = ft_strsplit(str_d, ' ');
+	arr_d = ft_strsplit(str_d, '|');
 	ft_sort_arr(&arr_d, fl);
 	while (*arr_d != NULL)
 	{
