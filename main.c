@@ -18,21 +18,13 @@ void	ft_print_arr(char **arr, t_flag *fl, char *name_dir)
 	static int	bl = 0;
 
 	i = 0;
-	if (bl)
-		ft_printf("\n%s:\n", name_dir);
-	bl = 1;
 	if (!fl->flag_l)
-		while (arr[i] != NULL)
-		{
-			ft_printf("%s\n", ft_last_ndir(arr[i]));
-			i++;
-		}
+		ft_indent(arr);
 	else
 	{
 		ft_print_total(arr);
 		ft_flag_l(arr, fl);
 	}
-
 }
 
 void	ft_open_dir(char *name_dir, t_flag *fl)
@@ -41,11 +33,15 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 	struct dirent	*dirent;
 	char			*str;
 	char			**arr;
+	static int		bl = 0;
 
+	if (bl)
+		ft_printf("\n%s:\n", name_dir);
+	bl = 1;
 	str = ft_strnew(0);
 	if (!(dir = opendir(name_dir)))
 	{
-		ft_printf("ft_ls: %s: No such file or directory\n", name_dir);
+		ft_printf("ft_ls: %s: Permission denied\n", name_dir);
 		return ;
 	}
 	while ((dirent = readdir(dir)) != NULL)

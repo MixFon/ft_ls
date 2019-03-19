@@ -103,6 +103,8 @@ void	ft_sort_descending(char ****arr)
 
 void	ft_sort_arr(char ***arr, t_flag *fl)
 {
+	if (ft_count_str(*arr) == 0)
+		return ;
 	if (fl->flag_r)
 		ft_sort_descending(&arr);
 	else

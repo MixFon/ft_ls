@@ -157,6 +157,7 @@ void	ft_flag_l(char **arr, t_flag *fl)
 		st_buf = (struct stat *)malloc(sizeof(struct stat));
 		if (lstat(*arr, st_buf) < 0)
 		{
+			ft_printf("%s\n", "eror lstat file ft_flag_l");
 			arr++;
 			continue ;
 		}
@@ -166,7 +167,8 @@ void	ft_flag_l(char **arr, t_flag *fl)
 		arr++;
 	}
 	ft_print_filds(filds);
-	ft_del_filds(filds);
+	if (filds != NULL)
+		ft_del_filds(filds);
 }
 /*
 void	ft_stat_line(struct stat *st_buf, char *name,

@@ -80,7 +80,7 @@ int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 			ft_printf("ft_ls: %s: No such file or directory\n", *(av + 1));
 			continue ;
 		}
-		if (S_ISREG(st_buf.st_mode))
+		if (!S_ISDIR(st_buf.st_mode))
 		{
 			str_n = ft_strnjoinfree(str_n, *(av + 1));
 			str_n = ft_strnjoinfree(str_n, "|");
@@ -96,11 +96,7 @@ int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 	if (fl->flag_l)
 		ft_flag_l(arr_n, fl);
 	else
-		while (*arr_n != NULL) //Поправить, нужна функция вывода не встолбик!
-		{
-			ft_printf("%s\n", ft_last_ndir(*arr_n));
-			arr_n++;
-		}
+		ft_indent(arr_n);
 	free(str_n);
 	ft_del_arr(arr_n);
 	return (1);

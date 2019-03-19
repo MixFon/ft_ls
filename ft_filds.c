@@ -43,7 +43,7 @@ size_t	ft_num(int arg)
 ** Функиция заполняет отступы для выравнивания.
 */
 
-void	ft_paragraph(t_filds *fild, int *ln, int *us, int *gr, int *sz, int *sma, int *smi)
+void	ft_paragraph(t_filds *fild, t_fsize *fs)
 {
 	int	temp;
 
@@ -51,59 +51,50 @@ void	ft_paragraph(t_filds *fild, int *ln, int *us, int *gr, int *sz, int *sma, i
 	while (fild != NULL)
 	{
 		temp = ft_num(fild->links);
-		if (temp > *ln)
-			*ln = temp;
+		if (temp > fs->ln)
+			fs->ln = temp;
 		temp = ft_strlen(fild->users);
-		if (temp > *us)
-			*us = temp + 1;
+		if (temp >= fs->us)
+			fs->us = temp + 2;
 		temp = ft_strlen(fild->grups);
-		if (temp > *gr)
-			*gr = temp + 2;
+		if (temp > fs->gr)
+			fs->gr = temp + 2;
 		temp = ft_num(fild->size);
-		if (temp > *sz)
-			*sz = temp;
+		if (temp > fs->sz)
+			fs->sz = temp;
 		temp = ft_num(fild->major);
-		if (temp > *sma)
-			*sma = temp;
+		if (temp > fs->sma)
+			fs->sma = temp + 2;
 		temp = ft_num(fild->minor);
-		if (temp > *smi)
-			*smi = temp;
+		if (temp > fs->smi)
+			fs->smi = temp + 1;
 		fild = fild->next;
 	}
-	//ft_printf("%d %d %d %*d", *ln, *us, *gr, *sz);
+	//ft_printf("%d %d %d %d\n", *ln, *us, *gr, *sz);
 }	
 
 void	ft_print_filds(t_filds *fild)
 {
-	int	ln;
-	int	us;
-	int	gr;
-	int	sz;
-	int	sma;
-	int	smi;
+	t_fsize	*fs;
 
-	ln = 0;
-	us = 0;
-	gr = 0;
-	sz = 0;
-	sma = 0;
-	smi = 0;
-	ft_paragraph(fild , &ln, &us, &gr, &sz, &sma, &smi);
+	fs = ft_new_fsize();
+	ft_paragraph(fild, fs);
 	while (fild != NULL)
 	{
 		if (fild->major == 0 && fild->major == 0)
-			ft_printf("%-11s %*d %-*s %-*s %*zd %s %2s %5s %s\n",
-		fild->rights, ln, fild->links, us, fild->users,
-		gr, fild->grups, sz + sma + smi + 2, fild->size,  fild->mon, fild->day,
+			ft_printf("%-11s %*d %-*s%-*s%*zd %s %2s %5s %s\n",
+		fild->rights, fs->ln, fild->links, fs->us, fild->users,
+		fs->gr, fild->grups, fs->sz + fs->sma + fs->smi, fild->size, fild->mon, fild->day,
 		fild->time, fild->name);
 		else
-			ft_printf("%-11s %*d %-*s %-*s %*d, %*d %s %2s %5s %s\n",
-		fild->rights, ln, fild->links, us, fild->users,
-		gr, fild->grups, sma, fild->major, smi, fild->minor, 
+			ft_printf("%-11s %*d %-*s%-*s%*d,%*d %s %2s %5s %s\n",
+		fild->rights, fs->ln, fild->links, fs->us, fild->users,
+		fs->gr, fild->grups, fs->sma - 1, fild->major, fs->smi, fild->minor, 
 		fild->mon, fild->day,
 		fild->time, fild->name);
 		fild = fild->next;
 	}
+	ft_del_fsize(fs);
 }
 
 /*
