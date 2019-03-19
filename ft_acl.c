@@ -1,7 +1,7 @@
 
 #include "ft_ls.h"
 
-void	ft_acl(char *rights, char *path)
+void	ft_acl(t_filds *fild, char *path)
 {
 	char	*list;
 	int		len;
@@ -11,9 +11,13 @@ void	ft_acl(char *rights, char *path)
 	len = listxattr(path, list, 1000, XATTR_NOFOLLOW);
 	acl = acl_get_file(path, ACL_TYPE_EXTENDED);
 	if (len > 0)
-		rights[10] = '@';
+	{
+		fild->rights[10] = '@';
+		fild->xattr = ft_strdup(list);
+	}
 	else	if (acl != NULL)
-		rights[10] = '+';
+		fild->rights[10] = '+';
+	//ft_printf("list%s\n", fild->xattr);
 	free(list);
 }
 

@@ -19,6 +19,8 @@ t_filds	*ft_create_fild(void)
 	new->next = NULL;
 	new->major = 0;
 	new->minor = 0;
+	new->xattr = NULL;
+	new->acl = NULL;
 	return (new);
 }
 
@@ -73,7 +75,7 @@ void	ft_paragraph(t_filds *fild, t_fsize *fs)
 	//ft_printf("%d %d %d %d\n", *ln, *us, *gr, *sz);
 }	
 
-void	ft_print_filds(t_filds *fild)
+void	ft_print_filds(t_filds *fild, t_flag *fl)
 {
 	t_fsize	*fs;
 
@@ -92,6 +94,8 @@ void	ft_print_filds(t_filds *fild)
 		fs->gr, fild->grups, fs->sma - 1, fild->major, fs->smi, fild->minor, 
 		fild->mon, fild->day,
 		fild->time, fild->name);
+		if (fl->flag_dog && fild->xattr)
+			ft_printf("%26s\n", fild->xattr);
 		fild = fild->next;
 	}
 	ft_del_fsize(fs);

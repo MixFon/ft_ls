@@ -91,5 +91,5 @@ void	ft_create_rights(t_filds *fild, struct stat *st_buf, char *path)
 	ft_access_rights_user(fild->rights, st_buf);
 	ft_access_rights_grup(fild->rights, st_buf);
 	ft_access_rights_all(fild->rights, st_buf);
-	ft_acl(fild->rights, path);
+	ft_acl(fild, path);
 }

@@ -166,7 +166,7 @@ void	ft_flag_l(char **arr, t_flag *fl)
 		free(st_buf);
 		arr++;
 	}
-	ft_print_filds(filds);
+	ft_print_filds(filds, fl);
 	if (filds != NULL)
 		ft_del_filds(filds);
 }

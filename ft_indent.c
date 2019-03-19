@@ -38,7 +38,7 @@ int		ft_lengthy(char **arr)
 ** Создание новой структуры для выравнивания.
 */
 
-t_ind	*ft_new_ind(void)
+t_ind	*ft_new_ind(char **arr_n)
 {
 	t_ind *new_ind;
 
@@ -49,6 +49,11 @@ t_ind	*ft_new_ind(void)
 	new_ind->tabl_col = 0;
 	new_ind->count_str = 0;
 	new_ind->tabl_str = 0;
+	new_ind->col = ft_winsize();
+	new_ind->len_str = ft_lengthy(arr_n) + 1;
+	new_ind->tabl_col = new_ind->col / new_ind->len_str;
+	new_ind->count_str = ft_count_str(arr_n);
+	new_ind->tabl_str = new_ind->count_str / new_ind->tabl_col;
 	return (new_ind);
 }
 
@@ -74,12 +79,7 @@ void	ft_indent(char **arr_n)
 	int		j;
 	
 	i = 0;
-	ind = ft_new_ind();
-	ind->col = ft_winsize();
-	ind->len_str = ft_lengthy(arr_n) + 1;
-	ind->tabl_col = ind->col / ind->len_str;
-	ind->count_str = ft_count_str(arr_n);
-	ind->tabl_str = ind->count_str / ind->tabl_col;
+	ind = ft_new_ind(arr_n);
 	if ((ind->count_str % ind->tabl_col) != 0)
 		ind->tabl_str++;
 	while (i < ind->tabl_str)
@@ -88,7 +88,8 @@ void	ft_indent(char **arr_n)
 		while (j < ind->tabl_col)
 		{
 			if (((j * ind->tabl_str) + i) < ind->count_str)
-				ft_printf("%-*s", ind->len_str,  ft_last_ndir(arr_n[(j * ind->tabl_str) + i]));
+				ft_printf("%-*s", ind->len_str,
+						ft_last_ndir(arr_n[(j * ind->tabl_str) + i]));
 			else
 				ft_printf("%s", " ");
 			j++;
