@@ -4,19 +4,24 @@
 void	ft_acl(t_filds *fild, char *path)
 {
 	char	*list;
+	ssize_t	ssize;
 	int		len;
 	acl_t	acl;
 
+	ssize = 1000;
 	list = ft_strnew(1000);
 	len = listxattr(path, list, 1000, XATTR_NOFOLLOW);
 	acl = acl_get_file(path, ACL_TYPE_EXTENDED);
+	if (acl != NULL)
+	{
+		fild->rights[10] = '+';
+		fild->acl = ft_strdup(acl_to_text(acl, &ssize));
+	}
 	if (len > 0)
 	{
 		fild->rights[10] = '@';
 		fild->xattr = ft_strdup(list);
 	}
-	else	if (acl != NULL)
-		fild->rights[10] = '+';
 	//ft_printf("list%s\n", fild->xattr);
 	free(list);
 }

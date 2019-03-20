@@ -15,15 +15,17 @@
 
 #include "libft_last_ver/ft_printf.h"
 #include <sys/types.h>
-#include <time.h>
 #include <sys/stat.h>
-#include <dirent.h>
-#include <pwd.h>
-#include <grp.h>
 #include <sys/types.h>
 #include <sys/xattr.h>
 #include <sys/acl.h>
+#include <sys/ioctl.h>
 #include <unistd.h>
+#include <time.h>
+#include <dirent.h>
+#include <pwd.h>
+#include <grp.h>
+#include <stdio.h>
 
 typedef	struct		s_flag
 {
@@ -33,6 +35,9 @@ typedef	struct		s_flag
 	int				flag_bigr;
 	int				flag_t;
 	int				flag_a;
+	int				flag_dog;
+	int				flag_e;
+	int				flag_f;
 }					t_flag;
 
 typedef struct		s_filds
@@ -48,8 +53,29 @@ typedef struct		s_filds
 	char			*name;
 	int				major;
 	int				minor;
+	char			*xattr;
+	char			*acl;
 	struct s_filds	*next;
 }					t_filds;
+
+typedef struct		s_fsize
+{
+	int				ln;
+	int				us;
+	int				gr;
+	int				sz;
+	int				sma;
+	int				smi;
+}					t_fsize;
+
+typedef struct		s_ind
+{
+	int	col;
+	int len_str;
+	int tabl_col;
+	int count_str;
+	int	tabl_str;
+}					t_ind;
 
 void	ft_flag_handing(t_flag *fl, int ac, char **av);
 t_flag	*ft_new_list_flag(void);
@@ -67,13 +93,18 @@ void	ft_access_rights_grup(char *rights, struct stat *st_buf);
 void	ft_access_rights_all(char *rights, struct stat *st_buf);
 t_filds	*ft_create_fild(void);
 void	ft_create_rights(t_filds *fild, struct stat *st_buf, char *path);
-void	ft_print_filds(t_filds *fild);
+void	ft_print_filds(t_filds *fild, t_flag *fl);
 void	ft_del_filds(t_filds *fild);
 void	ft_print_total(char **arr);
 void	ft_print_arr(char **arr, t_flag *fl, char *name_dir);
 int		ft_flag_handing_reg(t_flag *fl, int ac, char **av);
 void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl);
-void	ft_acl(char *rights, char *path);
+void	ft_acl(t_filds *fild, char *path);
 char	*ft_link_name(struct stat *st_buf, char *path);
+void	ft_paragraph(t_filds *fild, t_fsize *fs);
+void	ft_indent(char **);
+t_fsize	*ft_new_fsize(void);
+void	ft_del_fsize(t_fsize *fs);
+size_t	ft_count_str(char **arr);
 
 #endif

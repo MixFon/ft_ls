@@ -115,7 +115,8 @@ ft_check_dimension.c\
 ft_read_format.c\
 ft_is_flag_type_size.c\
 ft_check_flag_spetia_type.c\
-ft_memset_wchar.c
+ft_memset_wchar.c\
+ft_multi_strdup.c
 
 FILE_O = ft_atoi.o\
 ft_bzero.o\
@@ -218,7 +219,8 @@ ft_check_dimension.o\
 ft_read_format.o\
 ft_is_flag_type_size.o\
 ft_check_flag_spetia_type.o\
-ft_memset_wchar.o
+ft_memset_wchar.o\
+ft_multi_strdup.o
 
 all : $(NAME)
 

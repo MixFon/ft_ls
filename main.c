@@ -38,15 +38,15 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 	if (bl)
 		ft_printf("\n%s:\n", name_dir);
 	bl = 1;
-	str = ft_strnew(0);
+	str = NULL;
 	if (!(dir = opendir(name_dir)))
 	{
 		ft_printf("ft_ls: %s: Permission denied\n", name_dir);
 		return ;
 	}
 	while ((dirent = readdir(dir)) != NULL)
-		if (fl->flag_a == 1)
-			str = ft_join_name(str, dirent->d_name, name_dir);
+		if (fl->flag_a == 1 || fl->flag_f == 1)
+				str = ft_join_name(str, dirent->d_name, name_dir);
 		else
 			if (dirent->d_name[0] != '.')
 				str = ft_join_name(str, dirent->d_name, name_dir);

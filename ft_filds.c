@@ -95,7 +95,9 @@ void	ft_print_filds(t_filds *fild, t_flag *fl)
 		fild->mon, fild->day,
 		fild->time, fild->name);
 		if (fl->flag_dog && fild->xattr)
-			ft_printf("%26s\n", fild->xattr);
+			ft_printf("%26s%10s\n", fild->xattr, "0");
+		if (fl->flag_e && fild->acl)
+			ft_printf("%s", ft_strchr(fild->acl, '\n') + 1);
 		fild = fild->next;
 	}
 	ft_del_fsize(fs);
@@ -110,7 +112,7 @@ void	ft_del_filds(t_filds *fild)
 	t_filds	*prev;
 
 	prev = NULL;
-	while (fild->next != NULL)
+	while (fild != NULL)
 	{
 		free(fild->rights);
 		free(fild->users);
@@ -119,11 +121,12 @@ void	ft_del_filds(t_filds *fild)
 		free(fild->day);
 		free(fild->time);
 		free(fild->name);
+		free(fild->acl);
+		free(fild->xattr);
 		prev = fild;
 		fild = fild->next;
 		free(prev);
 		prev = NULL;
 	}
-	free(fild);
 	fild = NULL;
 }
