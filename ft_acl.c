@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_acl.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/21 11:40:41 by widraugr          #+#    #+#             */
+/*   Updated: 2019/03/21 11:49:26 by widraugr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_ls.h"
 
@@ -8,21 +19,20 @@ void	ft_acl(t_filds *fild, char *path)
 	int		len;
 	acl_t	acl;
 
-	ssize = 1000;
 	list = ft_strnew(1000);
 	len = listxattr(path, list, 1000, XATTR_NOFOLLOW);
 	acl = acl_get_file(path, ACL_TYPE_EXTENDED);
 	if (acl != NULL)
 	{
 		fild->rights[10] = '+';
-		fild->acl = ft_strdup(acl_to_text(acl, &ssize));
+		fild->acl = acl_to_text(acl, &ssize);
 	}
 	if (len > 0)
 	{
 		fild->rights[10] = '@';
 		fild->xattr = ft_strdup(list);
 	}
-	//ft_printf("list%s\n", fild->xattr);
+	free(acl);
 	free(list);
 }
 
@@ -40,11 +50,10 @@ char	*ft_link_name(struct stat *st_buf, char *path)
 	if (S_ISLNK(st_buf->st_mode))
 	{
 		readlink(path, buf, 100);
-		name = ft_strdup(ft_last_ndir(path));
-		name = ft_strnjoinfree(name, " -> ");
-		name = ft_strnjoinfree(name, buf);
+		name = ft_multi_strdup(3, ft_last_ndir(path), " -> ", buf);
 	}
 	else
 		name = ft_strdup(ft_last_ndir(path));
+	free(buf);
 	return (name);
 }

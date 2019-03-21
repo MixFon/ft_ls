@@ -6,7 +6,7 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:23:15 by widraugr          #+#    #+#             */
-/*   Updated: 2019/02/26 16:39:14 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/21 11:49:31 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,9 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 	}
 	while ((dirent = readdir(dir)) != NULL)
 		if (fl->flag_a == 1 || fl->flag_f == 1)
-				str = ft_join_name(str, dirent->d_name, name_dir);
-		else
-			if (dirent->d_name[0] != '.')
-				str = ft_join_name(str, dirent->d_name, name_dir);
-//	ft_printf("\n%s:\n", name_dir);
+			str = ft_join_name(str, dirent->d_name, name_dir);
+		else	if (dirent->d_name[0] != '.')
+			str = ft_join_name(str, dirent->d_name, name_dir);
 	arr = ft_strsplit(str, '|');
 	free(str);
 	ft_sort_arr(&arr, fl);
@@ -58,6 +56,7 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 	if (fl->flag_bigr)
 		ft_stat(arr, fl, ft_open_dir);
 	ft_del_arr(arr);
+	free(arr);
 	closedir(dir);
 }
 
@@ -83,7 +82,7 @@ t_flag	*ft_readflag(int ac, char **av)
 void	ft_switch(t_flag *fl, int ac, char **av)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!fl->flags)
 		ft_flag_handing(fl, ac + 1, av - 1);
@@ -91,8 +90,7 @@ void	ft_switch(t_flag *fl, int ac, char **av)
 		ft_flag_handing(fl, ac, av);
 }
 
-
-int		main (int ac, char **av)
+int		ain(int ac, char **av)
 {
 	t_flag		*fl;
 

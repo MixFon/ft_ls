@@ -1,6 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_access_rights.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/21 11:39:41 by widraugr          #+#    #+#             */
+/*   Updated: 2019/03/21 11:49:24 by widraugr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_ls.h"
-
 
 void	ft_type_files(char *rights, struct stat *st_buf)
 {
@@ -34,7 +44,7 @@ void	ft_access_rights_user(char *rights, struct stat *st_buf)
 		*(rights + 3) = 'x';
 	else
 		*(rights + 3) = '-';
-	if (((st_buf->st_mode & S_ISUID) == S_ISUID) && 
+	if (((st_buf->st_mode & S_ISUID) == S_ISUID) &&
 			((st_buf->st_mode & S_IXUSR) == S_IXUSR))
 		*(rights + 3) = 's';
 	else	if ((st_buf->st_mode & S_ISUID) == S_ISUID)
@@ -81,7 +91,6 @@ void	ft_access_rights_all(char *rights, struct stat *st_buf)
 		*(rights + 9) = 't';
 	else	if ((st_buf->st_mode & S_ISVTX) == S_ISVTX)
 		*(rights + 9) = 'T';
-
 }
 
 void	ft_create_rights(t_filds *fild, struct stat *st_buf, char *path)

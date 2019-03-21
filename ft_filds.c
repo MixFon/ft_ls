@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_filds.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/21 11:41:09 by widraugr          #+#    #+#             */
+/*   Updated: 2019/03/21 11:49:20 by widraugr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_ls.h"
 
@@ -5,7 +16,7 @@ t_filds	*ft_create_fild(void)
 {
 	t_filds	*new;
 
-	if(!(new = (t_filds *)malloc(sizeof(t_filds))))
+	if (!(new = (t_filds *)malloc(sizeof(t_filds))))
 		return (NULL);
 	new->rights = NULL;
 	new->links = 0;
@@ -72,8 +83,7 @@ void	ft_paragraph(t_filds *fild, t_fsize *fs)
 			fs->smi = temp + 1;
 		fild = fild->next;
 	}
-	//ft_printf("%d %d %d %d\n", *ln, *us, *gr, *sz);
-}	
+}
 
 void	ft_print_filds(t_filds *fild, t_flag *fl)
 {
@@ -86,12 +96,13 @@ void	ft_print_filds(t_filds *fild, t_flag *fl)
 		if (fild->major == 0 && fild->major == 0)
 			ft_printf("%-11s %*d %-*s%-*s%*zd %s %2s %5s %s\n",
 		fild->rights, fs->ln, fild->links, fs->us, fild->users,
-		fs->gr, fild->grups, fs->sz + fs->sma + fs->smi, fild->size, fild->mon, fild->day,
+		fs->gr, fild->grups, fs->sz + fs->sma + fs->smi,
+		fild->size, fild->mon, fild->day,
 		fild->time, fild->name);
 		else
 			ft_printf("%-11s %*d %-*s%-*s%*d,%*d %s %2s %5s %s\n",
 		fild->rights, fs->ln, fild->links, fs->us, fild->users,
-		fs->gr, fild->grups, fs->sma - 1, fild->major, fs->smi, fild->minor, 
+		fs->gr, fild->grups, fs->sma - 1, fild->major, fs->smi, fild->minor,
 		fild->mon, fild->day,
 		fild->time, fild->name);
 		if (fl->flag_dog && fild->xattr)

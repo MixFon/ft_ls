@@ -43,7 +43,7 @@ void	ft_stat(char **arr, t_flag *fl, void (*fcn)(char *, t_flag *))
 
 void	*ft_last_ndir(char *dir)
 {
-	size_t	len;
+	ssize_t	len;
 
 	len = ft_strlen(dir);
 	while (--len >= 0)
@@ -97,8 +97,9 @@ int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 		ft_flag_l(arr_n, fl);
 	else
 		ft_indent(arr_n);
-	free(str_n);
 	ft_del_arr(arr_n);
+	free(arr_n);
+	free(str_n);
 	return (1);
 }
 
@@ -111,6 +112,7 @@ void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl)
 {
 	struct	stat	st_buf;
 	char			**arr_d;
+	char			**arr_d2;
 	char			*str_d;
 	int				i;
 
@@ -132,6 +134,7 @@ void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl)
 		return ;
 	}
 	arr_d = ft_strsplit(str_d, '|');
+	arr_d2 = arr_d;
 	ft_sort_arr(&arr_d, fl);
 	while (*arr_d != NULL)
 	{
@@ -141,6 +144,7 @@ void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl)
 		i = 0;
 		arr_d++;
 	}
-	ft_del_arr(arr_d);
+	ft_del_arr(arr_d2);
+	free(arr_d2);
 	free(str_d);
 }

@@ -6,7 +6,7 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 15:08:12 by widraugr          #+#    #+#             */
-/*   Updated: 2019/02/26 16:39:16 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/21 11:49:29 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,16 @@ char	*ft_join_name(char *str, char *name, char *name_dir)
 
 void	ft_del_arr(char **arr)
 {
+	char **first_ptr;
+
+	first_ptr = arr;
 	while (*arr != NULL)
 	{
 		free(*arr);
 		*arr = NULL;
 		arr++;
 	}
+	//free(first_ptr);
 }
 
 /*
