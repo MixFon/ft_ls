@@ -27,6 +27,7 @@ t_flag	*ft_new_list_flag(void)
 	new_fl->flag_dog = 0;
 	new_fl->flag_e = 0;
 	new_fl->flag_f = 0;
+	new_fl->flag_1 = 0;
 	return (new_fl);
 }
 
@@ -81,6 +82,7 @@ void	ft_print_flag(t_flag *fl)
 	ft_printf("Flag R = %d\n", fl->flag_bigr);
 	ft_printf("Flag a = %d\n", fl->flag_a);
 	ft_printf("Flag t = %d\n", fl->flag_t);
+	ft_printf("Flag f = %d\n", fl->flag_f);
 	ft_printf("Flags = %d\n", fl->flags);
 }
 
@@ -106,6 +108,8 @@ void	ft_initialization(t_flag *fl, char *str)
 		fl->flag_e = 1;
 	if(ft_strchr(str, 'f'))
 		fl->flag_f = 1;
+	if(ft_strchr(str, '1'))
+		fl->flag_1 = 1;
 	fl->flags = 1;
-	//ft_print_flag(fl);
+//	ft_print_flag(fl);
 }

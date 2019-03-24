@@ -21,7 +21,7 @@ void	ft_flag_handing(t_flag *fl, int ac, char **av)
 	int bl;
 
 	bl = 0;
-	if (ac == 2)
+	if (*av == NULL)
 		ft_open_dir(".", fl);
 	else
 	{
@@ -50,7 +50,7 @@ size_t	ft_count_str(char **arr)
 
 void	ft_sort_ascending(char ****arr)
 {
-	size_t	count;
+	ssize_t	count;
 	char	*temp;
 	int		i;
 	int		j;
@@ -76,7 +76,7 @@ void	ft_sort_ascending(char ****arr)
 
 void	ft_sort_descending(char ****arr)
 {
-	size_t	count;
+	ssize_t	count;
 	char	*temp;
 	int		i;
 	int		j;

@@ -12,14 +12,19 @@
 
 #include "ft_ls.h"
 
-void	ft_print_arr(char **arr, t_flag *fl, char *name_dir)
+void	ft_print_arr(char **arr, t_flag *fl)
 {
-	int			i;
-	static int	bl = 0;
-
-	i = 0;
 	if (!fl->flag_l)
-		ft_indent(arr);
+	{
+		if (!fl->flag_1)
+			ft_indent(arr);
+		else
+			while(*arr != NULL)
+			{
+				ft_printf("%s\n", ft_last_ndir(*arr));
+				arr++;
+			}
+	}
 	else
 	{
 		ft_print_total(arr);
@@ -52,7 +57,7 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 	arr = ft_strsplit(str, '|');
 	free(str);
 	ft_sort_arr(&arr, fl);
-	ft_print_arr(arr, fl, name_dir);
+	ft_print_arr(arr, fl);
 	if (fl->flag_bigr)
 		ft_stat(arr, fl, ft_open_dir);
 	ft_del_arr(arr);
@@ -67,11 +72,17 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 t_flag	*ft_readflag(int ac, char **av)
 {
 	t_flag *fl;
+	int		i;
 
 	fl = ft_new_list_flag();
+	i = 1;
 	if (ac >= 2)
-		if (*av[1] == '-')
-			ft_initialization(fl, av[1]);
+		while (i < ac)
+		{
+			if (*av[i] == '-')
+				ft_initialization(fl, av[i]);
+			i++;
+		}
 	return (fl);
 }
 
@@ -83,14 +94,27 @@ void	ft_switch(t_flag *fl, int ac, char **av)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
+	av++;
+	while(--ac > 0)
+	{
+		if (**av == '-')
+			av++;
+		else
+			break ;
+		if (av == NULL)
+			break ;
+	}
+	ft_flag_handing(fl, ac, av);
+	/*
 	if (!fl->flags)
 		ft_flag_handing(fl, ac + 1, av - 1);
 	else
 		ft_flag_handing(fl, ac, av);
+	*/
 }
 
-int		ain(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_flag		*fl;
 

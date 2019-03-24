@@ -72,17 +72,17 @@ int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 
 	str_n = ft_strnew(0);
 	arr_n = NULL;
-	i = 1;
-	while (--ac - 1 > 0)
+	i = -1;
+	while (++i < ac)
 	{
-		if (lstat(*(++av + 1), &st_buf) == -1)
+		if (lstat(av[i], &st_buf) == -1)
 		{
-			ft_printf("ft_ls: %s: No such file or directory\n", *(av + 1));
+			ft_printf("ft_ls: %s: No such file or directory\n", av[i]);
 			continue ;
 		}
 		if (!S_ISDIR(st_buf.st_mode))
 		{
-			str_n = ft_strnjoinfree(str_n, *(av + 1));
+			str_n = ft_strnjoinfree(str_n, av[i]);
 			str_n = ft_strnjoinfree(str_n, "|");
 		}
 	}
@@ -116,15 +116,15 @@ void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl)
 	char			*str_d;
 	int				i;
 
-	i = 1;
 	str_d = ft_strnew(0);
-	while (--ac - 1 > 0)
+	i = -1;
+	while (++i < ac)
 	{
-		if (lstat(*(++av + 1), &st_buf) == -1)
+		if (lstat(av[i], &st_buf) == -1)
 			continue ;
 		if (S_ISDIR(st_buf.st_mode))
 		{
-			str_d = ft_strnjoinfree(str_d, *(av + 1));
+			str_d = ft_strnjoinfree(str_d,av[i]);
 			str_d = ft_strnjoinfree(str_d, "|");
 		}
 	}

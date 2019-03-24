@@ -60,7 +60,6 @@ char	*ft_infill_dt_time(char *time)
 
 void	ft_work_date(t_filds *fild, struct stat *st_buf)
 {
-	struct tm		*tm_buf;
 	char			**date;
 	long long int	real_sec;
 

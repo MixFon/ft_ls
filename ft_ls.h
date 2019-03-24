@@ -38,6 +38,7 @@ typedef	struct		s_flag
 	int				flag_dog;
 	int				flag_e;
 	int				flag_f;
+	int				flag_1;
 }					t_flag;
 
 typedef struct		s_filds
@@ -96,7 +97,7 @@ void	ft_create_rights(t_filds *fild, struct stat *st_buf, char *path);
 void	ft_print_filds(t_filds *fild, t_flag *fl);
 void	ft_del_filds(t_filds *fild);
 void	ft_print_total(char **arr);
-void	ft_print_arr(char **arr, t_flag *fl, char *name_dir);
+void	ft_print_arr(char **arr, t_flag *fl);
 int		ft_flag_handing_reg(t_flag *fl, int ac, char **av);
 void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl);
 void	ft_acl(t_filds *fild, char *path);
