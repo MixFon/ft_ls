@@ -6,20 +6,25 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:23:15 by widraugr          #+#    #+#             */
-/*   Updated: 2019/03/25 09:22:13 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/25 15:39:03 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	ft_print_arr(char **arr, t_flag *fl, char *name_dir)
+void	ft_print_arr(char **arr, t_flag *fl)
 {
-	int			i;
-	static int	bl = 0;
-
-	i = 0;
 	if (!fl->flag_l)
-		ft_indent(arr);
+	{
+		if (!fl->flag_1)
+			ft_indent(arr);
+		else
+			while (*arr != NULL)
+			{
+				ft_printf("%s\n", ft_last_ndir(*arr));
+				arr++;
+			}
+	}
 	else
 	{
 		ft_print_total(arr);
@@ -33,12 +38,8 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 	struct dirent	*dirent;
 	char			*str;
 	char			**arr;
-	static int		bl = 0;
 
-	if (bl)
-		ft_printf("\n%s:\n", name_dir);
-	bl = 1;
-	str = NULL;
+	str = ft_bl(name_dir);
 	if (!(dir = opendir(name_dir)))
 	{
 		ft_printf("ft_ls: %s: Permission denied\n", name_dir);
@@ -49,52 +50,70 @@ void	ft_open_dir(char *name_dir, t_flag *fl)
 			str = ft_join_name(str, dirent->d_name, name_dir);
 		else	if (dirent->d_name[0] != '.')
 			str = ft_join_name(str, dirent->d_name, name_dir);
-	arr = ft_strsplit(str, '|');
-	free(str);
-	ft_sort_arr(&arr, fl);
-	ft_print_arr(arr, fl, name_dir);
+	if (str == NULL)
+	{
+		closedir(dir);
+		return ;
+	}
+	arr = ft_sort_print_arr(str, fl);
 	if (fl->flag_bigr)
 		ft_stat(arr, fl, ft_open_dir);
-	ft_del_arr(arr);
-	free(arr);
-	closedir(dir);
+	ft_del_arr_dir(arr, &dir, &str);
 }
 
 /*
-** Функция считывания флагов.
+** Read flags.
 */
 
 t_flag	*ft_readflag(int ac, char **av)
 {
-	t_flag *fl;
+	t_flag	*fl;
+	int		i;
 
+	i = 1;
 	fl = ft_new_list_flag();
 	if (ac >= 2)
-		if (*av[1] == '-')
-			ft_initialization(fl, av[1]);
+		while (i < ac)
+		{
+			if (*av[i] == '-')
+				ft_initialization(fl, av[i]);
+			i++;
+		}
 	return (fl);
 }
 
 /*
-** Функция обрадотки флагов.
+** Works flags function.
 */
 
 void	ft_switch(t_flag *fl, int ac, char **av)
 {
 	int	i;
 
-	i = 0;
-	if (!fl->flags)
-		ft_flag_handing(fl, ac + 1, av - 1);
-	else
-		ft_flag_handing(fl, ac, av);
+	i = -1;
+	av++;
+	while (--ac > 0)
+	{
+		if (**av == '-')
+			av++;
+		else
+			break ;
+		if (av == NULL)
+			break ;
+	}
+	ft_flag_handing(fl, ac, av);
 }
 
-int		ain(int ac, char **av)
+int		main(int ac, char **av)
 {
 	t_flag		*fl;
 
 	fl = ft_readflag(ac, av);
+	if (fl->flag_error)
+	{
+		free(fl);
+		return (1);
+	}
 	if (ac == 1)
 		ft_open_dir(".", fl);
 	else

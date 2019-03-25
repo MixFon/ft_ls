@@ -6,7 +6,7 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 11:48:19 by widraugr          #+#    #+#             */
-/*   Updated: 2019/03/21 11:49:16 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/25 11:18:38 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		ft_winsize(void)
 {
 	struct winsize ws_buf;
 
-	ioctl(0, TIOCGWINSZ, &ws_buf);	
+	ioctl(0, TIOCGWINSZ, &ws_buf);
 	return (ws_buf.ws_col);
 }
 
@@ -53,7 +53,7 @@ t_ind	*ft_new_ind(char **arr_n)
 {
 	t_ind *new_ind;
 
-	if(!(new_ind = (t_ind *)malloc(sizeof(t_ind))))
+	if (!(new_ind = (t_ind *)malloc(sizeof(t_ind))))
 		return (NULL);
 	new_ind->col = 0;
 	new_ind->len_str = 0;
@@ -88,7 +88,7 @@ void	ft_indent(char **arr_n)
 	t_ind	*ind;
 	int		i;
 	int		j;
-	
+
 	i = 0;
 	ind = ft_new_ind(arr_n);
 	if ((ind->count_str % ind->tabl_col) != 0)

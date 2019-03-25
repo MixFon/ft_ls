@@ -1,11 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_new_fsize.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/25 10:58:01 by widraugr          #+#    #+#             */
+/*   Updated: 2019/03/25 11:18:40 by widraugr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_fsize		*ft_new_fsize(void)
+t_fsize	*ft_new_fsize(void)
 {
 	t_fsize *new_fs;
 
-	if(!(new_fs = (t_fsize *)malloc(sizeof(t_fsize))))
+	if (!(new_fs = (t_fsize *)malloc(sizeof(t_fsize))))
 		return (NULL);
 	new_fs->ln = 0;
 	new_fs->us = 0;

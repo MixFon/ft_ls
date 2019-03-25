@@ -6,7 +6,7 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 15:08:12 by widraugr          #+#    #+#             */
-/*   Updated: 2019/03/21 11:49:29 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/25 15:39:05 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,32 +27,23 @@ t_flag	*ft_new_list_flag(void)
 	new_fl->flag_dog = 0;
 	new_fl->flag_e = 0;
 	new_fl->flag_f = 0;
+	new_fl->flag_1 = 0;
+	new_fl->flag_error = 0;
 	return (new_fl);
 }
-
-/*
-** Создает дыумерный массив из имен папок.
-** Переписать функцию для ускорения работы.
-*/
 
 char	*ft_join_name(char *str, char *name, char *name_dir)
 {
 	char	*ptr;
 
-	//ft_printf("str = %s\n", str);
-	if(!(ptr = ft_multi_strdup(5, str, name_dir, "/", name, "|")))
+	if (!(ptr = ft_multi_strdup(5, str, name_dir, "/", name, "|")))
 		return (NULL);
 	free(str);
-	//ft_printf("ptr = %s\n", ptr);
-	//str = ft_strnjoinfree(str, name_dir);
-	//str = ft_strnjoinfree(str, "/");
-	//str = ft_strnjoinfree(str, name);
-	//str = ft_strnjoinfree(str, "|");
 	return (ptr);
 }
 
 /*
-** Удаляет массив имен.
+** Delete arr names.
 */
 
 void	ft_del_arr(char **arr)
@@ -66,46 +57,45 @@ void	ft_del_arr(char **arr)
 		*arr = NULL;
 		arr++;
 	}
-	//free(first_ptr);
 }
 
-/*
-** Функция печатает содержимое флага.
-** Удалить эту функцию!!!!.
-*/
-
-void	ft_print_flag(t_flag *fl)
+int		ft_print_error(char *str)
 {
-	ft_printf("Flag l = %d\n", fl->flag_l);
-	ft_printf("Flag r = %d\n", fl->flag_r);
-	ft_printf("Flag R = %d\n", fl->flag_bigr);
-	ft_printf("Flag a = %d\n", fl->flag_a);
-	ft_printf("Flag t = %d\n", fl->flag_t);
-	ft_printf("Flags = %d\n", fl->flags);
+	while (*(++str) != '\0')
+		if (!ft_strchr("lrRat@ef1", *str))
+		{
+			ft_printf("ft_ls: illegal option -- %c\n", *str);
+			ft_printf("usage: ls [-lrRat@ef1] [file ...]\n");
+			return (0);
+		}
+	return (1);
 }
 
 /*
-** Инициализирует структуру стандартными занчениями.
+** Init standart value.
 */
 
 void	ft_initialization(t_flag *fl, char *str)
 {
-	if(ft_strchr(str, 'l'))
+	if (ft_strchr(str, 'l'))
 		fl->flag_l = 1;
-	if(ft_strchr(str, 'r'))
+	if (ft_strchr(str, 'r'))
 		fl->flag_r = 1;
-	if(ft_strchr(str, 'R'))
+	if (ft_strchr(str, 'R'))
 		fl->flag_bigr = 1;
-	if(ft_strchr(str, 'a'))
+	if (ft_strchr(str, 'a'))
 		fl->flag_a = 1;
-	if(ft_strchr(str, 't'))
+	if (ft_strchr(str, 't'))
 		fl->flag_t = 1;
-	if(ft_strchr(str, '@'))
+	if (ft_strchr(str, '@'))
 		fl->flag_dog = 1;
-	if(ft_strchr(str, 'e'))
+	if (ft_strchr(str, 'e'))
 		fl->flag_e = 1;
-	if(ft_strchr(str, 'f'))
+	if (ft_strchr(str, 'f'))
 		fl->flag_f = 1;
+	if (ft_strchr(str, '1'))
+		fl->flag_1 = 1;
+	if (!ft_print_error(str))
+		fl->flag_error = 1;
 	fl->flags = 1;
-	//ft_print_flag(fl);
 }

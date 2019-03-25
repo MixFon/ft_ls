@@ -6,14 +6,14 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 11:45:05 by widraugr          #+#    #+#             */
-/*   Updated: 2019/03/21 11:49:25 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/25 12:53:49 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 /*
-** Печатает стрку total.
+** Ptint strung total.
 */
 
 void	ft_print_total(char **arr)
@@ -30,8 +30,7 @@ void	ft_print_total(char **arr)
 			arr++;
 			continue ;
 		}
-		if ((st_buf->st_mode & S_IFMT) != S_IFLNK)
-			total += st_buf->st_blocks;
+		total += st_buf->st_blocks;
 		free(st_buf);
 		arr++;
 	}
@@ -39,7 +38,7 @@ void	ft_print_total(char **arr)
 }
 
 /*
-** Создает строку содержащую время.
+** Create string time.
 */
 
 char	*ft_infill_dt_time(char *time)
@@ -55,12 +54,11 @@ char	*ft_infill_dt_time(char *time)
 }
 
 /*
-** Обрабатывает дату.
+** Works data.
 */
 
 void	ft_work_date(t_filds *fild, struct stat *st_buf)
 {
-	struct tm		*tm_buf;
 	char			**date;
 	long long int	real_sec;
 
@@ -79,7 +77,7 @@ void	ft_work_date(t_filds *fild, struct stat *st_buf)
 }
 
 /*
-** Создает новый элемент списка filds и добавляет уго в конец.
+** Create new element list filds and push in the end.
 */
 
 t_filds	*ft_stat_line(struct stat *st_buf, char *path,
@@ -111,7 +109,7 @@ t_filds	*ft_stat_line(struct stat *st_buf, char *path,
 }
 
 /*
-** При поднятом флаге l создает список из файлов
+** Create list of flags when up l.
 */
 
 void	ft_flag_l(char **arr, t_flag *fl)

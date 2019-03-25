@@ -6,11 +6,39 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 11:40:41 by widraugr          #+#    #+#             */
-/*   Updated: 2019/03/21 16:14:48 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/25 15:39:09 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+char	*ft_bl(char *name_dir)
+{
+	static int		bl = 0;
+
+	if (bl)
+		ft_printf("\n%s:\n", name_dir);
+	bl = 1;
+	return (NULL);
+}
+
+void	ft_del_arr_dir(char **arr, DIR **dir, char **str)
+{
+	ft_del_arr(arr);
+	free(arr);
+	free(*str);
+	closedir(*dir);
+}
+
+char	**ft_sort_print_arr(char *str, t_flag *fl)
+{
+	char	**arr;
+
+	arr = ft_strsplit(str, '|');
+	ft_sort_arr(&arr, fl);
+	ft_print_arr(arr, fl);
+	return (arr);
+}
 
 void	ft_acl(t_filds *fild, char *path)
 {
@@ -35,11 +63,6 @@ void	ft_acl(t_filds *fild, char *path)
 	free(acl);
 	free(list);
 }
-
-/*
-** Усли указан флаг l в символьной ссылке в имени указывается
-** файл, на который ссылается ссылка.
-*/
 
 char	*ft_link_name(struct stat *st_buf, char *path)
 {

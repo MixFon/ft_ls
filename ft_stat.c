@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_stat.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/25 10:12:47 by widraugr          #+#    #+#             */
+/*   Updated: 2019/03/25 12:53:48 by widraugr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_ls.h"
 
@@ -28,17 +39,15 @@ void	ft_stat(char **arr, t_flag *fl, void (*fcn)(char *, t_flag *))
 	{
 		if (lstat(arr[i], &stbuf) == -1)
 			ft_printf("Not access to file  %s\n", arr[i]);
-		//ft_printf("uid_y = %d\n", stbuf.st_atime); 
 		if (ft_chack_parent_dir(arr[i]))
 			continue ;
-		//ft_printf("!!!!stbuf.st_mode %d\n", stbuf.st_mode);
 		if (S_ISDIR(stbuf.st_mode))
 			fcn(arr[i], fl);
 	}
 }
 
 /*
-** Функция для печати только последней директории. 
+** Функция для печати только последней директории.
 */
 
 void	*ft_last_ndir(char *dir)
@@ -54,43 +63,22 @@ void	*ft_last_ndir(char *dir)
 			else
 				return (&dir[len]);
 		}
-
 	return (NULL);
 }
 
 /*
 ** Функция обрабатывает файлы пречисленные в командной строке
-** для функции ft_flag_handing.c. 
+** для функции ft_flag_handing.c.
 */
 
 int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 {
-	struct	stat	st_buf;
-	int				i;
 	char			**arr_n;
 	char			*str_n;
 
-	str_n = ft_strnew(0);
 	arr_n = NULL;
-	i = 1;
-	while (--ac - 1 > 0)
-	{
-		if (lstat(*(++av + 1), &st_buf) == -1)
-		{
-			ft_printf("ft_ls: %s: No such file or directory\n", *(av + 1));
-			continue ;
-		}
-		if (!S_ISDIR(st_buf.st_mode))
-		{
-			str_n = ft_strnjoinfree(str_n, *(av + 1));
-			str_n = ft_strnjoinfree(str_n, "|");
-		}
-	}
-	if (*str_n == '\0')		
-	{
-		free(str_n);
+	if (!(str_n = ft_lstat_iter_reg(ac, av)))
 		return (0);
-	}
 	arr_n = ft_strsplit(str_n, '|');
 	ft_sort_arr(&arr_n, fl);
 	if (fl->flag_l)
@@ -105,34 +93,19 @@ int		ft_flag_handing_reg(t_flag *fl, int ac, char **av)
 
 /*
 ** Функция обрабатывает файлы пречисленные в командной строке
-** для функции ft_flag_handing.c. 
+** для функции ft_flag_handing.c.
 */
 
 void	ft_flag_handing_dir(t_flag *fl, int ac, char **av, int bl)
 {
-	struct	stat	st_buf;
 	char			**arr_d;
 	char			**arr_d2;
 	char			*str_d;
 	int				i;
 
 	i = 1;
-	str_d = ft_strnew(0);
-	while (--ac - 1 > 0)
-	{
-		if (lstat(*(++av + 1), &st_buf) == -1)
-			continue ;
-		if (S_ISDIR(st_buf.st_mode))
-		{
-			str_d = ft_strnjoinfree(str_d, *(av + 1));
-			str_d = ft_strnjoinfree(str_d, "|");
-		}
-	}
-	if (*str_d == '\0')		
-	{
-		free(str_d);
+	if (!(str_d = ft_lstat_iter_dir(ac, av)))
 		return ;
-	}
 	arr_d = ft_strsplit(str_d, '|');
 	arr_d2 = arr_d;
 	ft_sort_arr(&arr_d, fl);

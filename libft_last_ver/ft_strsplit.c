@@ -6,7 +6,7 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/06 11:51:31 by widraugr          #+#    #+#             */
-/*   Updated: 2019/03/21 11:49:21 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/25 10:10:54 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static size_t	ft_strclen(char *s, char c)
 		i++;
 	return (i);
 }
+
 static	char	**ft_strfree(char **arr, int i)
 {
 	while (i >= 0)
