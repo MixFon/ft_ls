@@ -6,7 +6,7 @@
 #    By: widraugr <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/29 10:31:41 by widraugr          #+#    #+#              #
-#    Updated: 2019/03/25 11:18:41 by widraugr         ###   ########.fr        #
+#    Updated: 2019/03/25 16:44:59 by widraugr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ ft_indent.c\
 ft_list_flag.c\
 ft_new_fsize.c\
 ft_stat.c\
-ft_lstat_iter.c
+ft_lstat_iter.c\
+ft_sort_time.c
 
 OFILES = main.o\
 ft_access_rights.o\
@@ -36,7 +37,8 @@ ft_indent.o\
 ft_list_flag.o\
 ft_new_fsize.o\
 ft_stat.o\
-ft_lstat_iter.o
+ft_lstat_iter.o\
+ft_sort_time.o
 
 FLAGS = -Wall -Wextra -Werror
 

@@ -6,7 +6,7 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 10:23:47 by widraugr          #+#    #+#             */
-/*   Updated: 2019/03/25 15:39:11 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/25 16:45:01 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,6 @@ void				ft_del_arr_dir(char **arr, DIR **dir, char **str);
 void				*ft_lstat_iter_reg(int ac, char **av);
 void				*ft_lstat_iter_dir(int ac, char **av);
 char				**ft_sort_print_arr(char *str, t_flag *fl);
+void				ft_sort_time(char ****arr);
 
 #endif

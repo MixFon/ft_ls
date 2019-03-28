@@ -6,7 +6,7 @@
 /*   By: widraugr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 14:34:25 by widraugr          #+#    #+#             */
-/*   Updated: 2019/03/21 11:49:30 by widraugr         ###   ########.fr       */
+/*   Updated: 2019/03/25 16:44:55 by widraugr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ void	ft_sort_arr(char ***arr, t_flag *fl)
 		return ;
 	if (fl->flag_r)
 		ft_sort_descending(&arr);
+	else	if (fl->flag_t)
+		ft_sort_time(&arr);
 	else
 		ft_sort_ascending(&arr);
 }
